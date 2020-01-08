@@ -3,13 +3,6 @@ document.addEventListener('DOMContentLoaded', function(){
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    physics: {
-      default: 'arcade',
-      arcade: {
-          gravity: { y: 300 },
-          debug: false
-      }
-    },
     scene: {
       preload: preload,
       create: create,
@@ -18,73 +11,45 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 
   var photon;
+  var flashlight;
+  var metal;
 
   var game = new Phaser.Game(config);
 
-  let vx = -200;
-  let vy = 120;
+  let vx = -16;
+  let vy = 6;
   let hit = false;
 
   function preload ()
   {
     this.load.image('metal', 'images/metal.png');
+    this.load.image('flashlight', 'images/flashlight.png');
     this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 248, frameHeight: 112});
   }
 
   function create ()
   {
-    // The metal
-    metal = this.physics.add.staticGroup();
-    metal.create(200, 400, 'metal').setScale(0.5).refreshBody();
+    metal = this.add.image(400, 300, 'metal');
+    metal.setScale(0.4);
+    metal.x = 100;
 
-    // My photons
-    photon = this.physics.add.sprite(650, 100, 'photon');
-    photon.setGravityY(-300);
+    flashlight = this.add.image(400, 300, 'flashlight');
+    flashlight.setScale(0.2);
+    flashlight.y = 100;
+    flashlight.x = 700;
+    flashlight.angle = 3;
+
+    photon = this.add.image(400, 300, 'photon');
     photon.setScale(0.2);
+    photon.y = 93;
+    photon.x = 700;
     photon.angle = -30;
-
-    //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-    var photons = this.physics.add.group({
-        key: 'photon',
-        repeat: 8,
-        setXY: { x: 450, y: 100, stepX: 30 },
-    });
-
-    photons.setVelocityX(vx);
-    photons.setVelocityY(vy);
-
-    photons.children.iterate(function (child) {
-
-        //  Give each photon a different ???????
-        child.setScale(0.2);
-        child.angle = -30;
-        child.setGravityY(-300);
-
-
-    });
-
-    // photon
-    this.anims.create({
-        key: 'hell',
-        frames: [ { key: 'photon', frame: 0 } ],
-        frameRate: 20
-    });
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-
   }
 
   function update ()
   {
-    if (photon.x < 215 && !hit){
-      hit = true;
-      vx *= -1;
-      photon.angle *= -1;
-    }
-    photon.setVelocityX(vx);
-    photon.setVelocityY(vy);
-    photon.anims.play('hell');
+    //photon.x += vx;
+    //photon.y += vy;
   }
 
 });
