@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(){
+
+  var input = document.createElement('input');
+  var btn = document.createElement("BUTTON");
+
+
+
   var config = {
     type: Phaser.AUTO,
     width: 800,
