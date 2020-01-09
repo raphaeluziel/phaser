@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function create ()
   {
+
+    scoreText = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
+
     metal = this.add.image(100, 298, 'metal');
     metal.setScale(0.4);
 
@@ -75,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function(){
     photons.x += vx;
     photons.y += vy;
     */
+
+    scoreText.setText(Math.round(t/1000));
 
 
     if (photon.x < 120) {
