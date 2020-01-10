@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function(){
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    backgroundColor: '#2d2d2d',
+    parent: this,
     dom: {
         createContainer: true
     },
@@ -34,10 +34,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function preload ()
   {
+    this.load.html('specs', 'assets/specs.html');
+    this.load.html('nameform', 'assets/text/nameform.html');
     this.load.image('metal', 'images/metal.png');
     this.load.image('flashlight', 'images/flashlight.png');
     this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 248, frameHeight: 112});
-    this.load.html('nameform', 'assets/text/loginform.html');
   }
 
   function create ()
@@ -51,10 +52,8 @@ document.addEventListener('DOMContentLoaded', function(){
         'font-weight': 'bold'
     };
 
-    var element = this.add.dom(400, 300, 'div', style, 'Phaser 3');
-
-    this.add.dom(0, 0, 'div', 'background-color: lime; width: 220px; height: 100px; font: 48px Arial', 'Phaser');
-
+    //this.add.dom(200, 50, 'div', 'background-color: lime; width: 100px; height: 40px; font: 18px Arial', 'Phaser is hell');
+    this.add.dom(200, 200).createFromCache('specs');
 
     scoreText = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
 
@@ -92,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     //var element = this.add.dom(400, 0).createFromCache('nameform');
-    this.add.dom(200, 200, 'div', 'background-color: lime; width: 220px; height: 100px; font: 48px Arial', 'Phaser');
   }
 
   function update (t)
@@ -117,4 +115,6 @@ document.addEventListener('DOMContentLoaded', function(){
     photon.y += vy;
 
   }
+
+
 });
