@@ -2,10 +2,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   var color = 0;
 
-  document.getElementById('choose_color').addEventListener('click', function(){
-    color = document.getElementById('photon_color').value;
-  });
-
   var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -34,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function preload ()
   {
-    this.load.html('specs', 'assets/specs.html');
-    this.load.html('nameform', 'assets/text/nameform.html');
     this.load.image('metal', 'images/metal.png');
     this.load.image('flashlight', 'images/flashlight.png');
     this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 248, frameHeight: 112});
@@ -44,68 +38,48 @@ document.addEventListener('DOMContentLoaded', function(){
   function create ()
   {
 
-    var style = {
-        'background-color': 'lime',
-        'width': '220px',
-        'height': '100px',
-        'font': '48px Arial',
-        'font-weight': 'bold'
-    };
+    var photonColor = document.createElement('input');
+    photonColor.type = "number";
+    photonColor.min = 0;
+    photonColor.max = 5;
+    photonColor.defaultValue = 2;
+    photonColor.id = "photon_color"
+    photonColor.className = "photonInput";
+    this.add.dom(30, 580, photonColor);
 
-    //this.add.dom(200, 50, 'div', 'background-color: lime; width: 100px; height: 40px; font: 18px Arial', 'Phaser is hell');
-    this.add.dom(200, 200).createFromCache('specs');
+    var setColor = document.createElement('button');
+    setColor.innerHTML = "Set";
+    setColor.className = "button";
+    setColor.id = "choose_color";
+    setColor.addEventListener ('click', function(){
+      color = document.getElementById('photon_color').value;
+    });
+    this.add.dom(76, 576, setColor);
 
-    scoreText = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
+    timer = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
 
     metal = this.add.image(100, 298, 'metal');
     metal.setScale(0.4);
 
-    flashlight = this.add.image(700, 80, 'flashlight');
-    flashlight.setScale(0.2);
-    flashlight.angle = 9;
-
-    photon = this.add.image(700, 85, 'photon');
+    photon = this.add.sprite(700, 85, 'photon');
     photon.setScale(0.2);
     photon.y = 73;
     photon.x = 700;
     photon.angle = -20;
     photon.setFrame(color);
 
-    photons = this.add.group({
-        key: 'photon',
-        repeat: 3,
-        setXY: { x: 450, y: 100, stepX: 40 },
-    });
-    //photons.setScale(0.2);
-    photons.y = 73;
-    photons.x = 700;
-    photons.angle = -20;
-    //photons.setFrame(4);
+    this.time.addEvent({delay: 1000, callback: emit, callbackScope: this, repeat: 8});
 
-    photons.children.iterate(function (child) {
-        child.setScale(0.2);
-        child.angle = -20;
-        child.setFrame(4);
-        child.y = 73;
-        //child.x = 400;
-    });
+    flashlight = this.add.image(700, 80, 'flashlight');
+    flashlight.setScale(0.2);
+    flashlight.angle = 9;
 
-    //var element = this.add.dom(400, 0).createFromCache('nameform');
   }
 
   function update (t)
   {
-    /*
-    if (photons.x < 120) {
-      vx *= -1;
-      photons.angle *= -1;
-    }
-    photons.x += vx;
-    photons.y += vy;
-    */
     photon.setFrame(color);
-    scoreText.setText(Math.round(t/1000));
-
+    timer.setText(Math.round(t/1000));
 
     if (photon.x < 120) {
       vx *= -1;
@@ -113,7 +87,18 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     photon.x += vx;
     photon.y += vy;
+  }
 
+
+
+  function emit ()
+  {
+    photon = this.add.sprite(700, 85, 'photon');
+    photon.setScale(0.2);
+    photon.y = 73;
+    photon.x = 700;
+    photon.angle = -20;
+    photon.setFrame(color);
   }
 
 
