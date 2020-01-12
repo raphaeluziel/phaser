@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function(){
     width: 800,
     height: 600,
     parent: this,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
     dom: {
         createContainer: true
     },
@@ -68,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function(){
     photon.angle = -20;
     photon.setFrame(color);
 
-    photons = this.add.group({
+    photons = this.physics.add.group({
         key: 'photon',
         repeat: 6,
         setXY: { x: 240, y: 50, stepX: 40 },
@@ -76,13 +83,12 @@ document.addEventListener('DOMContentLoaded', function(){
         runChildUpdate: true
     });
 
+
     photons.children.iterate(function (photon) {
       photon.setScale(0.2);
       photon.angle = -20;
       photon.setFrame(color);
     });
-
-    //this.time.addEvent({delay: 1000, callback: emitPhoton, callbackScope: this, repeat: 8});
 
     flashlight = this.add.image(700, 80, 'flashlight');
     flashlight.setScale(0.2);
@@ -92,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function update (t)
   {
-    /*
     photon.setFrame(color);
     timer.setText(Math.round(t/1000));
 
@@ -100,22 +105,10 @@ document.addEventListener('DOMContentLoaded', function(){
       vx *= -1;
       photon.angle *= -1;
     }
-    */
+
     photon.x += vx;
     photon.y += vy;
 
-  }
-
-
-
-  function emit ()
-  {
-    photon = this.add.sprite(700, 85, 'photon');
-    photon.setScale(0.2);
-    photon.y = 73;
-    photon.x = 700;
-    photon.angle = -20;
-    photon.setFrame(color);
   }
 
 
