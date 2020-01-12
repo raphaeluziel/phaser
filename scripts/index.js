@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var game = new Phaser.Game(config);
 
   let vx = -8;
+  let vxA = -8;
   let vy = 3;
   let hit = false;
 
@@ -71,9 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
     photons = this.add.group({
         key: 'photon',
         repeat: 6,
-        setXY: { x: 240, y: 50, stepX: 40 },
-        active: true,
-        runChildUpdate: true
+        setXY: { x: 240, y: 50, stepX: 40 }
     });
 
     photons.children.iterate(function (photon) {
@@ -92,7 +91,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function update (t)
   {
-    /*
+
+    photons.children.iterate(function (photon) {
+      if (photon.x < 50) {
+        vxA *= -1;
+        photon.angle *= -1;
+      }
+      photon.setFrame(color);
+      photon.x += vxA;
+      photon.y += vy;
+    });
+
+
     photon.setFrame(color);
     timer.setText(Math.round(t/1000));
 
@@ -100,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function(){
       vx *= -1;
       photon.angle *= -1;
     }
-    */
+
     photon.x += vx;
     photon.y += vy;
 
