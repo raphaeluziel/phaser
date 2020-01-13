@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function(){
   var flashlight;
   var metal;
 
+  var ph = [];
+
   var game = new Phaser.Game(config);
 
   let vx = -8;
@@ -92,20 +94,23 @@ document.addEventListener('DOMContentLoaded', function(){
   function update (t)
   {
     n += 1;
-    console.log(n);
+    //console.log(n);
     //console.log(t);
-    let ph = photons.getChildren();
+    //let ph = photons.getChildren();
 
     if (n % 200 === 0){
-      ph.push(photon);
-      console.log("photon added");
+      pho = this.add.sprite(700, 85, 'photon');
+      pho.setScale(0.2);
+      pho.vx = -8;
+      pho.angle = -20;
+      pho.setFrame(color);
+      ph.push(pho);
+      console.log(ph[0].x, ph[0].vx);
     }
 
     for (let i = 0; i < ph.length; i++)
     {
       ph[i].setFrame(color);
-      timer.setText(Math.round(t/1000));
-
       if (ph[i].x < 120) {
         ph[i].vx *= -1;
         ph[i].angle *= -1;
@@ -115,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function(){
       ph[i].y += vy;
     }
 
-
+    timer.setText(Math.round(t/1000));
 
   }
 
