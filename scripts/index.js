@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function(){
     photons.children.iterate(function (photon) {
       photon.setScale(0.2);
       photon.angle = -20;
+      photon.vx = -8;
       photon.setFrame(color);
     });
 
@@ -87,28 +88,34 @@ document.addEventListener('DOMContentLoaded', function(){
 
   }
 
+  var n = 0;
   function update (t)
   {
+    n += 1;
+    console.log(n);
+    //console.log(t);
     let ph = photons.getChildren();
-    let fr = Math.round(t / 1000);
 
-    console.log(fr);
-
-    if (t/2000){
+    if (n % 200 === 0){
       ph.push(photon);
-      fr = 0;
+      console.log("photon added");
     }
 
-    ph[0].setFrame(color);
-    timer.setText(Math.round(t/1000));
+    for (let i = 0; i < ph.length; i++)
+    {
+      ph[i].setFrame(color);
+      timer.setText(Math.round(t/1000));
 
-    if (ph[0].x < 120) {
-      vx *= -1;
-      ph[0].angle *= -1;
+      if (ph[i].x < 120) {
+        ph[i].vx *= -1;
+        ph[i].angle *= -1;
+      }
+
+      ph[i].x += ph[i].vx;
+      ph[i].y += vy;
     }
 
-    ph[0].x += vx;
-    ph[0].y += vy;
+
 
   }
 
