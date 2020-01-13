@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
     photons = this.add.group({
         key: 'photon',
         repeat: 6,
-        setXY: { x: 240, y: 50, stepX: 40 }
+        setXY: { x: 700, y: 73 }
     });
 
     photons.children.iterate(function (photon) {
@@ -80,8 +80,6 @@ document.addEventListener('DOMContentLoaded', function(){
       photon.angle = -20;
       photon.setFrame(color);
     });
-
-    //this.time.addEvent({delay: 1000, callback: emitPhoton, callbackScope: this, repeat: 8});
 
     flashlight = this.add.image(700, 80, 'flashlight');
     flashlight.setScale(0.2);
@@ -91,42 +89,27 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function update (t)
   {
+    let ph = photons.getChildren();
+    let fr = Math.round(t / 1000);
 
-    photons.children.iterate(function (photon) {
-      if (photon.x < 50) {
-        vxA *= -1;
-        photon.angle *= -1;
-      }
-      photon.setFrame(color);
-      photon.x += vxA;
-      photon.y += vy;
-    });
+    console.log(fr);
 
-
-    photon.setFrame(color);
-    timer.setText(Math.round(t/1000));
-
-    if (photon.x < 120) {
-      vx *= -1;
-      photon.angle *= -1;
+    if (t/2000){
+      ph.push(photon);
+      fr = 0;
     }
 
-    photon.x += vx;
-    photon.y += vy;
+    ph[0].setFrame(color);
+    timer.setText(Math.round(t/1000));
+
+    if (ph[0].x < 120) {
+      vx *= -1;
+      ph[0].angle *= -1;
+    }
+
+    ph[0].x += vx;
+    ph[0].y += vy;
 
   }
-
-
-
-  function emit ()
-  {
-    photon = this.add.sprite(700, 85, 'photon');
-    photon.setScale(0.2);
-    photon.y = 73;
-    photon.x = 700;
-    photon.angle = -20;
-    photon.setFrame(color);
-  }
-
 
 });
