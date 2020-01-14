@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(){
 
-  var color = 0;
-
   var config = {
     type: Phaser.AUTO,
     width: 800,
-    height: 600,
-    parent: this,
+    height: 550,
+    parent: 'game',
     dom: {
         createContainer: true
     },
@@ -17,14 +15,13 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   };
 
+  var game = new Phaser.Game(config);
+
+  var color = 0;
   var photon;
-  var photons;
+  var photons = [];
   var flashlight;
   var metal;
-
-  var ph = [];
-
-  var game = new Phaser.Game(config);
 
   let vx = -8;
   let vxA = -8;
@@ -40,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function create ()
   {
-
+    /*
     var photonColor = document.createElement('input');
     photonColor.type = "number";
     photonColor.min = 0;
@@ -58,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function(){
       color = document.getElementById('photon_color').value;
     });
     this.add.dom(76, 576, setColor);
+    */
+
+    var colorname = document.getElementById('pColor').value;
 
     timer = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
 
@@ -71,19 +71,6 @@ document.addEventListener('DOMContentLoaded', function(){
     photon.angle = -20;
     photon.setFrame(color);
 
-    photons = this.add.group({
-        key: 'photon',
-        repeat: 6,
-        setXY: { x: 700, y: 73 }
-    });
-
-    photons.children.iterate(function (photon) {
-      photon.setScale(0.2);
-      photon.angle = -20;
-      photon.vx = -8;
-      photon.setFrame(color);
-    });
-
     flashlight = this.add.image(700, 80, 'flashlight');
     flashlight.setScale(0.2);
     flashlight.angle = 9;
@@ -94,30 +81,32 @@ document.addEventListener('DOMContentLoaded', function(){
   function update (t)
   {
     n += 1;
-    //console.log(n);
-    //console.log(t);
-    //let ph = photons.getChildren();
-
-    if (n % 200 === 0){
-      pho = this.add.sprite(700, 85, 'photon');
-      pho.setScale(0.2);
-      pho.vx = -8;
-      pho.angle = -20;
-      pho.setFrame(color);
-      ph.push(pho);
-      console.log(ph[0].x, ph[0].vx);
+    let x;
+    if (n % 10 === 0){
+      x = this.add.sprite(650, 83, 'photon');
+      x.setScale(0.2);
+      x.vx = -8;
+      x.angle = -20;
+      x.setFrame(color);
+      photons.push(x);
     }
 
-    for (let i = 0; i < ph.length; i++)
+    for (let i = 0; i < photons.length; i++)
     {
-      ph[i].setFrame(color);
-      if (ph[i].x < 120) {
-        ph[i].vx *= -1;
-        ph[i].angle *= -1;
+
+      if (photons[i].x < 120) {
+        photons[i].hit = true;
+        photons[i].angle *= -1;
       }
 
-      ph[i].x += ph[i].vx;
-      ph[i].y += vy;
+      if (photons[i].hit) {
+        photons[i].x -= vx;
+      }
+      else{
+        photons[i].x += vx;
+      }
+      photons[i].y += vy;
+
     }
 
     timer.setText(Math.round(t/1000));
