@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function(){
     width: 800,
     height: 550,
     parent: 'game',
-    dom: {
-        createContainer: true
-    },
     scene: {
       preload: preload,
       create: create,
@@ -17,59 +14,64 @@ document.addEventListener('DOMContentLoaded', function(){
 
   var game = new Phaser.Game(config);
 
-  var color = 0;
+  var color = 1;
+  var colorNames = ['Infrared', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Violet', 'Ultraviolet'];
+  var intensity = 1;
+  var intensityName = '1';
+
   var photon;
   var photons = [];
   var flashlight;
   var metal;
 
-  let vx = -8;
-  let vxA = -8;
-  let vy = 3;
-  let hit = false;
+  var vx = -8;
+  var vxA = -8;
+  var vy = 3;
+  var hit = false;
+
+  // Change color and/or intensity when selection changes
+  document.getElementById('photon_color').addEventListener('change', function(){
+    color = parseInt(this.value);
+    currentColor.setText(colorNames[color]);
+    sessionStorage.setItem('color', color);
+  });
+  document.getElementById('intensity').addEventListener('change', function(){
+    intensity = parseInt(this.value);
+    currentIntensity.setText(intensity);
+    sessionStorage.setItem('intensity', intensity);
+  });
 
   function preload ()
   {
     this.load.image('metal', 'images/metal.png');
     this.load.image('flashlight', 'images/flashlight.png');
-    this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 248, frameHeight: 112});
+    this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 255, frameHeight: 112});
   }
 
   function create ()
   {
-    /*
-    var photonColor = document.createElement('input');
-    photonColor.type = "number";
-    photonColor.min = 0;
-    photonColor.max = 5;
-    photonColor.defaultValue = 2;
-    photonColor.id = "photon_color"
-    photonColor.className = "photonInput";
-    this.add.dom(30, 580, photonColor);
+    timer = this.add.text(20, 20, 'Begin', { fontSize: '24px', fill: '#fcc' });
 
-    var setColor = document.createElement('button');
-    setColor.innerHTML = "Set";
-    setColor.className = "button";
-    setColor.id = "choose_color";
-    setColor.addEventListener ('click', function(){
-      color = document.getElementById('photon_color').value;
-    });
-    this.add.dom(76, 576, setColor);
-    */
+    this.add.text(5, 530, 'Color:', { fontSize: '16px', fill: '#fff' });
+    currentColor = this.add.text(65, 530, colorNames[color], { fontSize: '16px', fill: '#fff' });
 
-    var colorname = document.getElementById('pColor').value;
+    this.add.text(200, 530, 'Intensity:', { fontSize: '16px', fill: '#fff' });
+    currentIntensity = this.add.text(300, 530, intensity, { fontSize: '16px', fill: '#fff' });
 
-    timer = this.add.text(60, 60, 'Begin', { fontSize: '32px', fill: '#f00' });
+    // Remember selections
+    if (sessionStorage.getItem('color')){
+      color = parseInt(sessionStorage.getItem('color'));
+      currentColor.setText(colorNames[color]);
+      document.getElementById('photon_color').value = color;
+    }
+    if (sessionStorage.getItem('intensity')){
+      intensity = parseInt(sessionStorage.getItem('intensity'));
+      currentIntensity.setText(intensity);
+      document.getElementById('intensity').value = intensity;
+    }
 
     metal = this.add.image(100, 298, 'metal');
     metal.setScale(0.4);
-
-    photon = this.add.sprite(700, 85, 'photon');
-    photon.setScale(0.2);
-    photon.y = 73;
-    photon.x = 700;
-    photon.angle = -20;
-    photon.setFrame(color);
 
     flashlight = this.add.image(700, 80, 'flashlight');
     flashlight.setScale(0.2);
@@ -82,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(){
   {
     n += 1;
     let x;
-    if (n % 10 === 0){
+    if (n % Math.round((100 / intensity)) === 0){
       x = this.add.sprite(650, 83, 'photon');
       x.setScale(0.2);
       x.vx = -8;
