@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function(){
     n += 1;
     let x;
     if (n % Math.round((100 / intensity)) === 0){
-      x = this.add.sprite(650, 83, 'photon');
+      x = this.add.sprite(650, 80 + 30 * Math.random(), 'photon');
       x.setScale(0.2);
       x.vx = -8;
       x.angle = -20;
