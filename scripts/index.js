@@ -21,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
   var photon;
   var photons = [];
+  var electron;
+  var electrons = [];
   var flashlight;
   var metal;
 
   var vx = -8;
-  var vxA = -8;
   var vy = 3;
+  var vex = 10;
   var hit = false;
 
   // Change color and/or intensity when selection changes
@@ -45,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
   {
     this.load.image('metal', 'images/metal.png');
     this.load.image('flashlight', 'images/flashlight.png');
+    this.load.image('electron', 'images/electron.png');
     this.load.spritesheet('photon', 'images/photons.png', { frameWidth: 255, frameHeight: 112});
   }
 
@@ -99,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function(){
       if (photons[i].x < 120) {
         photons[i].hit = true;
         photons[i].angle *= -1;
+        electrons.push(this.add.sprite(100, 290, 'electron'));
+        electrons[electrons.length - 1].setScale(0.1);
       }
 
       if (photons[i].hit) {
@@ -109,6 +114,20 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       photons[i].y += vy;
 
+      if (photons[0].y > 600){
+        photons[0].destroy();
+        photons.shift();
+      }
+
+    }
+
+    for (let j = 0; j < electrons.length; j++){
+      electrons[j].x += vex;
+
+      if (electrons[j].x > 800){
+        electrons[j].destroy();
+        electrons.splice(j, 1);
+      }
     }
 
     timer.setText(Math.round(t/1000));
