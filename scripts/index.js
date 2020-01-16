@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function(){
     for (let j = 0; j < electrons.length; j++){
       electrons[j].x += vex;
 
-      if (electrons[j].x > 800){
+      if (electrons[j].x > 500){
         electrons[j].destroy();
         electrons.splice(j, 1);
       }
