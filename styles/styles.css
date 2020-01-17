@@ -1,11 +1,8 @@
-.photonInput {
+input{
   width: 30px;
-  background-color: blue;
-  color: white;
-  font-size: 18px;
-  padding-left: 10px;
-  border: none;
+  text-align: right;
 }
-.button {
+.reset {
+  width: 60px;
   font-size: 14px;
 }

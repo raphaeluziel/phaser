@@ -14,36 +14,15 @@
 
     <div class="controls">
 
-      <select id="photon_color">
-        <option selected disabled>Color</option>
-        <option value="0">Infrared</option>
-        <option value="1">Red</option>
-        <option value="2">Orange</option>
-        <option value="3">Yellow</option>
-        <option value="4">Green</option>
-        <option value="5">Blue</option>
-        <option value="6">Violet</option>
-        <option value="7">Ultraviolet</option>
-      </select>
+      <form id>
+        Photon Energy: <input type="text" id="photon_energy" value="1.6">&nbsp;&nbsp;eV&nbsp;&nbsp;&nbsp;&nbsp;
+        Intensity (0-10): <input type="text" id="intensity" value="1">&nbsp;&nbsp;&nbsp;&nbsp;
+        Work function: <input type="text" id="work">&nbsp;&nbsp;eV&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="reset" value="Reset" class="reset">
+      </form>
 
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <div class="message" id="message"></div>
 
-      <select id="intensity">
-        <option selected disabled>Intensity</option>
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
 
     </div>
 

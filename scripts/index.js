@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var config = {
     type: Phaser.AUTO,
     width: 800,
-    height: 550,
+    height: 480,
     parent: 'game',
     scene: {
       preload: preload,
@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 
   var game = new Phaser.Game(config);
+
+  var message = "";
 
   var color = 1;
   var colorNames = ['Infrared', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Violet', 'Ultraviolet'];
@@ -32,15 +34,29 @@ document.addEventListener('DOMContentLoaded', function(){
   var hit = false;
 
   // Change color and/or intensity when selection changes
-  document.getElementById('photon_color').addEventListener('change', function(){
-    color = parseInt(this.value);
-    currentColor.setText(colorNames[color]);
-    sessionStorage.setItem('color', color);
+  document.getElementById('photon_energy').addEventListener('change', function(){
+    message = "";
+    if (ev < 1.00) { message = "Enter a photon energy value between 1 and 10"; }
+    else if (ev < 1.59) { color = 0; }
+    else if (ev < 2.00) { color = 1; }
+    else if (ev < 2.08) { color = 2; }
+    else if (ev < 2.15) { color = 3; }
+    else if (ev < 2.53) { color = 4; }
+    else if (ev < 2.73) { color = 5; }
+    else if (ev < 3.19) { color = 6; }
+    else if (ev < 10.0) { color = 7; }
+    else { message = "Enter a photon energy value between 1 and 10"; }
+    document.getElementById('message').innerHTML = message;
   });
+
   document.getElementById('intensity').addEventListener('change', function(){
+    message = "";
     intensity = parseInt(this.value);
-    currentIntensity.setText(intensity);
-    sessionStorage.setItem('intensity', intensity);
+    if (intensity > 10 || intensity < 0 || isNaN(intensity)) {
+      intensity = 1;
+      document.getElementById('intensity').value = 1;
+      document.getElementById('message').innerHTML = "Enter an intensity between 0 and 10";
+    }
   });
 
   function preload ()
@@ -54,24 +70,6 @@ document.addEventListener('DOMContentLoaded', function(){
   function create ()
   {
     timer = this.add.text(20, 20, 'Begin', { fontSize: '24px', fill: '#fcc' });
-
-    this.add.text(5, 530, 'Color:', { fontSize: '16px', fill: '#fff' });
-    currentColor = this.add.text(65, 530, colorNames[color], { fontSize: '16px', fill: '#fff' });
-
-    this.add.text(200, 530, 'Intensity:', { fontSize: '16px', fill: '#fff' });
-    currentIntensity = this.add.text(300, 530, intensity, { fontSize: '16px', fill: '#fff' });
-
-    // Remember selections
-    if (sessionStorage.getItem('color')){
-      color = parseInt(sessionStorage.getItem('color'));
-      currentColor.setText(colorNames[color]);
-      document.getElementById('photon_color').value = color;
-    }
-    if (sessionStorage.getItem('intensity')){
-      intensity = parseInt(sessionStorage.getItem('intensity'));
-      currentIntensity.setText(intensity);
-      document.getElementById('intensity').value = intensity;
-    }
 
     metal = this.add.image(100, 298, 'metal');
     metal.setScale(0.4);
@@ -102,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if (photons[i].x < 120) {
         photons[i].hit = true;
         photons[i].angle *= -1;
-        electrons.push(this.add.sprite(100, 290, 'electron'));
+        electrons.push(this.add.sprite(photons[i].x, photons[i].y, 'electron'));
         electrons[electrons.length - 1].setScale(0.1);
       }
 
