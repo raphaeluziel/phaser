@@ -1,8 +1,10 @@
 input{
-  width: 30px;
+  width: 22px;
   text-align: right;
+  background-color: lightyellow;
 }
-.reset {
+.reset, #set {
   width: 60px;
   font-size: 14px;
+  background-color: #ccffcc;
 }

@@ -17,9 +17,11 @@ document.addEventListener('DOMContentLoaded', function(){
   var message = "";
 
   var color = 1;
-  var colorNames = ['Infrared', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Violet', 'Ultraviolet'];
+
+  var photon_energy = 1.8;
+  var work_function = 1.0;
   var intensity = 1;
-  var intensityName = '1';
+  var stopping_voltage = 0;
 
   var photon;
   var photons = [];
@@ -33,29 +35,50 @@ document.addEventListener('DOMContentLoaded', function(){
   var vex = 10;
   var hit = false;
 
-  // Change color and/or intensity when selection changes
-  document.getElementById('photon_energy').addEventListener('change', function(){
-    message = "";
-    if (ev < 1.00) { message = "Enter a photon energy value between 1 and 10"; }
-    else if (ev < 1.59) { color = 0; }
-    else if (ev < 2.00) { color = 1; }
-    else if (ev < 2.08) { color = 2; }
-    else if (ev < 2.15) { color = 3; }
-    else if (ev < 2.53) { color = 4; }
-    else if (ev < 2.73) { color = 5; }
-    else if (ev < 3.19) { color = 6; }
-    else if (ev < 10.0) { color = 7; }
-    else { message = "Enter a photon energy value between 1 and 10"; }
-    document.getElementById('message').innerHTML = message;
-  });
+  document.getElementById('photon_energy').value = 1.8;
+  document.getElementById('work_function').value = 1.0;
+  document.getElementById('intensity').value = 1;
+  document.getElementById('stopping_voltage').value = 0;
 
-  document.getElementById('intensity').addEventListener('change', function(){
+  document.getElementById('set').addEventListener('click', function(){
     message = "";
-    intensity = parseInt(this.value);
-    if (intensity > 10 || intensity < 0 || isNaN(intensity)) {
+
+    photon_energy = parseFloat(document.getElementById('photon_energy').value);
+    work_function = parseFloat(document.getElementById('work_function').value);
+    intensity = parseInt(document.getElementById('intensity').value);
+    stopping_voltage = parseFloat(document.getElementById('stopping_voltage').value);
+
+    console.log(photon_energy);
+
+    if (photon_energy < 1 || photon_energy > 10 || isNaN(photon_energy)) {
+      message = "Enter a photon energy between 1 and 10";
+      photon_energy = 1.8;
+      document.getElementById('photon_energy').value = 1.8;
+    }
+    else {
+      if (photon_energy < 1.59) { color = 0; }
+      else if (photon_energy < 2.00) { color = 1; }
+      else if (photon_energy < 2.08) { color = 2; }
+      else if (photon_energy < 2.15) { color = 3; }
+      else if (photon_energy < 2.53) { color = 4; }
+      else if (photon_energy < 2.73) { color = 5; }
+      else if (photon_energy < 3.19) { color = 6; }
+      else if (photon_energy < 10.0) { color = 7; }
+    }
+    if (work_function < 0 || work_function > 10 || isNaN(work_function)) {
+      message = "Enter a work function between 0 and 10";
+      work_function = 1.0;
+      document.getElementById('work_function').value = 1.0;
+    }
+    if (intensity < 0 || intensity > 10 || isNaN(intensity)) {
+      message = "Enter an integer for intensity between 0 and 10";
       intensity = 1;
       document.getElementById('intensity').value = 1;
-      document.getElementById('message').innerHTML = "Enter an intensity between 0 and 10";
+    }
+    if (stopping_voltage < 0 || stopping_voltage > 10 || isNaN(stopping_voltage)) {
+      message = "Enter a stopping between 0 and 10";
+      stopping_voltage = 0;
+      document.getElementById('stopping_voltage').value = 0;
     }
   });
 
@@ -120,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     for (let j = 0; j < electrons.length; j++){
-      electrons[j].x += vex;
+      electrons[j].x += Math.sqrt(photon_energy);
 
-      if (electrons[j].x > 500){
+      if (electrons[j].x > 800){
         electrons[j].destroy();
         electrons.splice(j, 1);
       }
