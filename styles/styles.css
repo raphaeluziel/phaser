@@ -1,10 +1,23 @@
+body{
+  width: 850px;
+  margin: 20px auto;
+}
+h1{
+  text-align: center;
+  font-size: 28px;
+}
 input{
-  width: 22px;
+  width: 50px;
+  height: 22px;
   text-align: right;
+  padding-right: 4px;
+  padding-bottom: 2px;
   background-color: lightyellow;
 }
-.reset, #set {
-  width: 60px;
-  font-size: 14px;
-  background-color: #ccffcc;
+form{
+  padding-bottom: 10px;
+}
+.message{
+  color: darkred;
+  padding-left: 10px;
 }
